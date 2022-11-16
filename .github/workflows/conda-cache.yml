@@ -16,6 +16,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      
       - name: Cache conda
         uses: actions/cache@v2
         env:
@@ -26,7 +27,9 @@ jobs:
           key:
             ${{ runner.os }}-conda-${{ env.CACHE_NUMBER }}-${{
             hashFiles('environment.yml') }}
-      - uses: conda-incubator/setup-miniconda@v2
+
+      - name: Setup conda
+        uses: conda-incubator/setup-miniconda@v2
         with:
           activate-environment: conda-cache-env
           environment-file: environment.yml
