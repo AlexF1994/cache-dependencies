@@ -33,7 +33,7 @@ jobs:
 
       - uses: actions/cache@v2
         with:
-          path: ${{ /usr/share/miniconda3/envs/mamba-cache-env }}
+          path: /usr/share/miniconda3/envs/mamba-cache-env
           key: linux-conda-${{ hashFiles('environment.yml') }}-${{ env.DATE }}-${{ env.CACHE_NUMBER }}
         id: cache
 
