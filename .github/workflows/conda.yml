@@ -22,5 +22,5 @@ jobs:
           environment-file: environment.yml
           python-version: 3.8
           auto-activate-base: false
-          channels: conda-forge, defaults
+          channels: conda-forge,defaults,pytorch
           use-only-tar-bz2: true

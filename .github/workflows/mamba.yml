@@ -22,5 +22,5 @@ jobs:
           activate-environment: mamba-env
           environment-file: environment.yml
           python-version: 3.8
-          channels: conda-forge,defaults
+          channels: conda-forge,defaults,pytorch
           channel-priority: true
