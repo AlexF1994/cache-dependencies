@@ -7,6 +7,10 @@ on:
     branches: [ "main" ]
   workflow_dispatch:
 
+env:
+  # Increase this value to reset cache if environment.yml has not changed
+  CACHE_NUMBER: 0
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -16,23 +20,23 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Cache conda
-        uses: actions/cache@v2
-        env:
-          # Increase this value to reset cache if environment.yml has not changed
-          CACHE_NUMBER: 0
+      - name: Setup Mambaforge
+        uses: conda-incubator/setup-miniconda@v2
         with:
-          path: ~/conda_pkgs_dir
-          key:
-            ${{ runner.os }}-conda-${{ env.CACHE_NUMBER }}-${{
-            hashFiles('environment.yml') }}
-      - uses: conda-incubator/setup-miniconda@v2
+            miniforge-variant: Mambaforge
+            miniforge-version: latest
+            activate-environment: mamba-cache-env
+            use-mamba: true
+            
+      - name: Set cache date
+        run: echo "DATE=$(date +'%Y%m%d')" >> $GITHUB_ENV
+
+      - uses: actions/cache@v2
         with:
-          mamba-version: "*"
-          activate-environment: mamba-cache-env
-          environment-file: environment.yml
-          channel-priority: strict
-          auto-activate-base: false
-          python-version: 3.8
-          channels: conda-forge,defaults,pytorch
-          use-only-tar-bz2: true 
+          path: ${{ /usr/share/miniconda3/envs/mamba-cache-env }}
+          key: linux-conda-${{ hashFiles('environment.yml') }}-${{ env.DATE }}-${{ env.CACHE_NUMBER }}
+        id: cache
+
+      - name: Update environment
+        run: mamba env update -n mamba-cache-env -f environment.yml
+        if: steps.cache.outputs.cache-hit != 'true'
