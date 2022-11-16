@@ -34,7 +34,7 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: /usr/share/miniconda3/envs/mamba-cache-env
-          key: linux-conda-${{ hashFiles('environment.yml') }}-${{ env.DATE }}-${{ env.CACHE_NUMBER }}
+          key: ${{ runner.os }}-conda-${{ hashFiles('environment.yml') }}-${{ env.DATE }}-${{ env.CACHE_NUMBER }}
         id: cache
 
       - name: Update environment
