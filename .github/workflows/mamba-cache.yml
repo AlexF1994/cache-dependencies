@@ -1,4 +1,4 @@
-name: Mamba solo
+name: Mamba cache
 
 on:
   push:
@@ -35,3 +35,4 @@ jobs:
           auto-activate-base: false
           python-version: 3.8
           channels: conda-forge,defaults,pytorch
+          use-only-tar-bz2: true 
